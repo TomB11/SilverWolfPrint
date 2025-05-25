@@ -1,0 +1,16 @@
+@import '../../../styles.scss';
+
+.dashboard-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    background-color: $secondary-color;
+    position: fixed;
+    bottom: 0;
+
+    p {
+        color: $accent-color !important;
+    }
+}

@@ -1,0 +1,90 @@
+@import '../../../styles.scss';
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .dashboard-header-content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        background-color: $secondary-color;
+        padding: 10px;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+    
+            img {
+                width: 80%;
+                height: auto;
+                border-radius: 50%;
+            }
+        }
+
+        .search-input {
+            flex: 1;
+
+            input {
+                width: 100%;
+                padding: 10px;
+                margin: 5px;
+                border: 1px solid $border-color;
+                border-radius: 20px;
+                font-size: 16px;
+                color: $primary-color;
+                background-color: $secondary-color;
+        
+                &:focus {
+                    outline: none;
+                    border-color: $accent-color;
+                    background-color: $primary-color;
+                    color: $secondary-color; 
+                }
+            }
+
+            &:focus-within {
+                flex: auto;
+            }
+        }  
+
+        .dashboard-header-title {
+            font-size: 24px;
+            color: $primary-color;
+            text-shadow: 2px 2px 4px rgb(182, 182, 182);
+            margin-bottom: 10px;
+            align-self: center;
+            flex: 2;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 20px;
+            flex: 2;
+
+            .navbar-nav {
+                width: 100%;
+                justify-content: end;
+
+                a {
+                    color: $accent-color;
+                    text-decoration: none;
+                    margin-right: 15px;
+
+                    &:hover {
+                        color: white;
+                    }
+                }
+            }
+        }
+    } 
+}

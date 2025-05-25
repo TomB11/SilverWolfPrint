@@ -1,0 +1,29 @@
+@import '../../../styles.scss';
+
+.billboard {
+    background-image: url('/assets/billboard.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+
+    .empty {
+        flex: 2;
+    }
+
+    .billboard-content {
+        flex: 1;
+        color: $primary-color;
+
+        h1 {
+            color: $primary-color !important;
+            font-size: 2rem;
+        }
+
+        .button {
+            margin-top: 2rem;
+        }
+    }
+}
