@@ -2,14 +2,20 @@
 <main class="container">
     <section>
         <h1>Novinky</h1>
-        <div>
-            <app-card></app-card>
+        <div class="products-grid">
+            <app-card *ngFor="let item of newsCards" [cardInfo]="item"></app-card>
         </div>
     </section>
     <section>
         <h1>Oblubene</h1>
+        <div class="products-grid">
+            <app-card *ngFor="let item of favoritesCards" [cardInfo]="item"></app-card>
+        </div>
     </section>
     <section>
         <h1>Prislusenstvo</h1>
+        <div class="products-grid">
+            <app-card *ngFor="let item of accesoriesCards" [cardInfo]="item"></app-card>
+        </div>
     </section>
 </main>
