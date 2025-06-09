@@ -23,7 +23,7 @@ export class DetailPageComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    console.log('DetailPageComponent initialized with ID:', this.id);
+    console.log('DetailPageComponent initialized with ID:', this.id());
 
     
   }

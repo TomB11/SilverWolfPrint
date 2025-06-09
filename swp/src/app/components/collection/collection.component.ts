@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Collection } from '../../interfaces/collection';
 import { Router } from '@angular/router';
 
@@ -11,10 +11,7 @@ import { Router } from '@angular/router';
 })
 export class CollectionComponent {
   collection = input.required<Collection>();
-
-  constructor(public router: Router) {
-    // Initialization logic can go here if needed
-  }
+  router = inject(Router);
 
   navigateTo(url: string): void {
     console.warn('Navigating to:', url);
