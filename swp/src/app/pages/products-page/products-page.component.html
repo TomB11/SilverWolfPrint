@@ -1,10 +1,15 @@
-<div>=
-
+<div>
     <main class="container">
         <section>
-            <h1>Produkty</h1>
-            <div class="products-grid"></div>
+            <h1>{{ productsTitle | uppercase }}</h1>
+            <div class="products-grid">
+                @for (item of productCards; track $index) {
+                    <app-card [cardInfo]="item"></app-card>
+                }
+                @empty {
+                    <p>No products available at the moment.</p>
+                }
+            </div>
         </section>
     </main>
-
 </div>

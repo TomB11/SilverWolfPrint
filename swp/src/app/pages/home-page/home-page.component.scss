@@ -1,7 +1,17 @@
-.products-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 16px 0;
-    flex-direction: row;
+section {
+    padding: 16px;
+
+    .cards {
+        justify-content: space-between;
+    }
+
+    h1 {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .cards {
+        justify-content: center !important;
+    }
 }

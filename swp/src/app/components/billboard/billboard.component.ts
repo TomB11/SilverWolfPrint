@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-billboard',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './billboard.component.html',
   styleUrl: './billboard.component.scss'
 })
