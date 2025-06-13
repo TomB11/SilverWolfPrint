@@ -11,4 +11,13 @@ import { CommonModule } from '@angular/common';
 })
 export class PrintItemDetailComponent {
   itemData = input.required<PrintItem>();
+
+  goBack() {
+    window.history.back();
+  }
+
+  addToCart(item: PrintItem) {
+    console.log('Add to cart clicked for item:', this.itemData());
+    // Implement add to cart functionality here
+  }
 }

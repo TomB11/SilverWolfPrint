@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Collection } from '../interfaces/collection';
 import jsonData from '../../../public/productsData.json';
 import { PrintItem } from '../interfaces/printItem';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs/internal/observable/of';
 
 @Injectable({
   providedIn: 'root'
@@ -17,4 +19,8 @@ export class ApiCallsService {
   ]
 
   constructor() { }
+
+  getProducts(): Observable<PrintItem[]> {
+    return of(this.productsData); // or return this.http.get<PrintItem[]>('...');
+  }
 }

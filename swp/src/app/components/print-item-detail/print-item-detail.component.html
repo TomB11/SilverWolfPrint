@@ -1,9 +1,16 @@
 <div class="print-item-detail">
     <div class="image-container">
-        <img class="image" [src]="itemData().image" alt="{{ itemData().name }}" />
+        <img class="image" [src]="itemData().image ? itemData().image : '/assets/default.jpg'" alt="{{ itemData().name }}" />
     </div>
     <div class="info-container">
         <h1 class="title">{{ itemData().name }}</h1>
+        <p class="category">Kategoria: {{ itemData().category }}</p>
         <p class="description">{{ itemData().description }}</p>
+        <p class="price">Cena: {{ itemData().price | currency }}</p>
+        <br>
+        <div class="action-buttons">
+            <button class="add-to-cart button" (click)="addToCart(itemData())">Kupit</button>
+            <button class="back-button button buttonBack" (click)="goBack()">Spat</button>
+        </div>
     </div>
 </div>

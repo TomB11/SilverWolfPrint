@@ -6,6 +6,7 @@ import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { appStateReducer, initialState } from './state/appState/appState.reducer';
+import { AppStateEffects } from './state/appState/appState.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,9 +14,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideStore(
-      { appState: appStateReducer },
-      { initialState: { appState: initialState } }
+      { appState: appStateReducer }
     ),
-    provideEffects([])
+    provideEffects([
+      AppStateEffects
+    ])
   ]
 };

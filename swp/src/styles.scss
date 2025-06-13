@@ -36,6 +36,21 @@ span {
     }
 }
 
+.buttonBack {
+    background-color: $primary-color;
+    color: $secondary-color;
+    border: 1px solid $accent-color;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $secondary-color;
+        color: $primary-color;
+        transition: 0.5s;
+    }
+}
+
 .products-grid {
     display: flex;
     flex-wrap: wrap;
