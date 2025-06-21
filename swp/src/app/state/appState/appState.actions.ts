@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { AppState } from '../../interfaces/app';
 
 // Example actions based on common app state patterns.
 // Adjust these according to your actual appState.reducer logic.
@@ -24,4 +25,9 @@ export const addToCart = createAction(
 export const removeFromCart = createAction(
     '[AppState] Remove From Cart',
     props<{ productId: string }>()
+);
+
+export const setState = createAction(
+    "[AppState] setState", 
+    props<{state: AppState}>()
 );

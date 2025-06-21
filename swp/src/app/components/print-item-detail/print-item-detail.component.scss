@@ -3,7 +3,7 @@
   flex-direction: row;
   padding: 20px;
   font-family: Arial, sans-serif;
-  gap: 20px;
+  gap: 5rem;
 
   .image-container {
     width: 100%;
@@ -22,12 +22,12 @@
 
   .info-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 400px;
     text-align: left;
 
     h1 {
       font-size: 24px;
-      margin-bottom: 10px;
+      margin-bottom: 2rem;
     }
 
     p {
@@ -39,6 +39,7 @@
     .price {
       font-size: 20px;
       font-weight: bold;
+      margin-top: 2rem;
     }
 
     .action-buttons {

@@ -18,7 +18,7 @@ export class AppStateEffects {
             this.actions$.pipe(
                 ofType(AppStateActions.loadProducts),
                 mergeMap(() =>
-                    this.apiCallService.getProducts().pipe( // <-- use the Observable method
+                    this.apiCallService.getProducts().pipe(
                         map((products: PrintItem[]) => AppStateActions.loadProductsSuccess({ products })),
                         catchError(error => of(AppStateActions.loadProductsFailure({ error })))
                     )

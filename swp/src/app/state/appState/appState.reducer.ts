@@ -11,6 +11,15 @@ export const initialState: AppState = {
 
 const reducer = createReducer(
     initialState,
+    on(AppStateActions.setState, (state, action) => {
+        return {
+            ...state,
+            products: action.state.products,
+            cart: action.state.cart,
+            loading: action.state.loading,
+            error: action.state.error
+        }
+    }),
     on(AppStateActions.loadProducts, (state) => ({
         ...state,
         loading: true,

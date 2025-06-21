@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { PrintItem } from '../../interfaces/printItem';
 import { CommonModule } from '@angular/common';
 
@@ -9,11 +9,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './print-item-detail.component.html',
   styleUrl: './print-item-detail.component.scss'
 })
-export class PrintItemDetailComponent {
+export class PrintItemDetailComponent implements OnInit {
   itemData = input.required<PrintItem>();
 
   goBack() {
     window.history.back();
+  }
+  
+  ngOnInit (): void {
+    console.log('PrintItemDetailComponent initialized with item:', this.itemData());
   }
 
   addToCart(item: PrintItem) {

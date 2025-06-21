@@ -5,6 +5,7 @@ import { PrintItemDetailComponent } from "../../components/print-item-detail/pri
 import { Store } from '@ngrx/store';
 import { map, Subscription } from 'rxjs';
 import { AppState } from '../../interfaces/app';
+import { StateDataService } from '../../services/state-data.service';
 
 @Component({
   selector: 'app-detail-page',
@@ -27,17 +28,19 @@ export class DetailPageComponent implements OnInit {
     stock: 0
   };
 
+  constructor(private stateDataService: StateDataService) {
+    this.stateDataService.getStateData();
+  }
+
   ngOnInit(): void {
     console.log('DetailPageComponent initialized with ID:', this.id());
+    console.log('DetailPageComponent state', this.appState);
 
     this.findProductSubs = this.appState.pipe(
       map((state: any) => state.appState.products?.find((item: { id: number; }) => item.id === parseInt(this.id(), 10)))
     ).subscribe((product) => {
       if (product) {
         this.selectedItem = product as PrintItem;
-        console.log('Selected item:', this.selectedItem);
-      } else {
-        console.error('Product not found with ID:', this.id());
       }
     })
 

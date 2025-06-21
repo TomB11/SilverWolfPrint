@@ -7,6 +7,7 @@ $accent-color: grey;
 $background-color: silver;
 $text-color: black;
 $border-color: silver;
+$highlight-color: rgb(230, 230, 230);
 
 body {
     background-color: $background-color;
@@ -30,24 +31,19 @@ span {
     cursor: pointer;
 
     &:hover {
-        background-color: $primary-color;
+        background-color: $highlight-color;
         color: $secondary-color;
         transition: 0.5s;
     }
 }
 
 .buttonBack {
-    background-color: $primary-color;
-    color: $secondary-color;
-    border: 1px solid $accent-color;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: $primary-color !important;
+    color: $secondary-color !important;
 
     &:hover {
-        background-color: $secondary-color;
-        color: $primary-color;
-        transition: 0.5s;
+        background-color: $secondary-color !important;
+        color: $primary-color !important;
     }
 }
 

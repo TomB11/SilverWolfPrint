@@ -4,13 +4,13 @@
     </div>
     <div class="info-container">
         <h1 class="title">{{ itemData().name }}</h1>
-        <p class="category">Kategoria: {{ itemData().category }}</p>
+        <p class="category"><b>{{'Kategoria:' | uppercase}}</b> {{ itemData().category }}</p>
         <p class="description">{{ itemData().description }}</p>
         <p class="price">Cena: {{ itemData().price | currency }}</p>
         <br>
         <div class="action-buttons">
-            <button class="add-to-cart button" (click)="addToCart(itemData())">Kupit</button>
-            <button class="back-button button buttonBack" (click)="goBack()">Spat</button>
+            <button class="button" (click)="addToCart(itemData())">Kupit</button>
+            <button class="button buttonBack" (click)="goBack()">Spat</button>
         </div>
     </div>
 </div>
