@@ -1,0 +1,35 @@
+<div class="search-input">
+    <input 
+        type="text" 
+        #searchInput 
+        name="searchText" 
+        placeholder="Hladat..." 
+        class="search-bar" 
+        (keyup)="onSearch(searchInput.value)" 
+        (keyup.enter)="onSearch(searchInput.value)"
+        appFocusOff (focusOff)="closeSearch()">
+</div>
+
+@defer {
+    @if (searched()) {
+        <div class="search-results">
+            @if (searchResults().length > 0) {
+                <ul>
+                    @for (item of searchResults(); track $index) {
+                    <li (click)="clickResultItem(item)">
+                        <img class="image" [src]="item.image ? item.image : '/assets/default.jpg'" alt="{{ item.name }}" />
+                        <div class="text-container">
+                            <span class="name">{{ item.name }}</span>
+                            <span class="category">{{ item.category }}</span>
+                        </div>
+                        <span class="price">{{ item.price | currency }}</span>
+                    </li>
+                    }
+                </ul>
+            } @else {
+                <p>Žiadne výsledky neboli nájdené.</p>
+            }
+        </div>
+    }
+}
+    

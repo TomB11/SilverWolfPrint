@@ -1,4 +1,4 @@
-@import '../../../styles.scss';
+@use  '../../../styles.scss' as *;
 
 .billboard {
     background-image: url('/assets/billboard.jpg');
@@ -16,6 +16,7 @@
     .billboard-content {
         flex: 1;
         color: $primary-color;
+        padding: 20px;
 
         h1 {
             color: $primary-color !important;
