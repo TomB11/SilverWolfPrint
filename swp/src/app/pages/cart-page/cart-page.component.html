@@ -1,0 +1,27 @@
+<main class="container">
+  <div class="cart-page">
+    <div class="title-status">
+      <h3 class="title">Tvoj kosik</h3>
+      <h4 class="status">Krok 1/3</h4>
+    </div>
+    <div class="cart-table" *ngIf="cartItems.length > 0; else emptyCart">
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <img class="item-image" [src]="item.image ? item.image : '/assets/default.jpg'" alt="{{ item.name }}" />
+          <div class="item-details">
+            <h2 class="item-name">{{ item.name }}</h2>
+            <p class="item-price">{{ item.price | currency }}</p>
+            <button class="remove-button button">Zrusit</button>
+          </div>
+        </div>
+      </div>
+      <div class="cart-total">
+        <span class="total-label">Celkova suma:</span>
+        <p class="total-price">{{ cartTotal | currency }}</p>
+      </div>
+    </div>
+    <ng-template #emptyCart>
+      <p class="empty-cart-message">Tvoj kosik je prazdny.</p>
+    </ng-template>
+  </div>
+</main>
