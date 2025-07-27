@@ -3,7 +3,7 @@
     <section>
         <h1>Novinky</h1>
         <div class="products-grid cards">
-            @for (item of newsCards; track $index) {
+            @for (item of sectionNewCards(); track $index) {
                 <app-card [cardInfo]="item"></app-card>
             }
             @empty {
@@ -14,7 +14,7 @@
     <section>
         <h1>Kolekcia</h1>
         <div class="products-grid">
-            @for (item of collectionsCards; track $index) {
+            @for (item of sectionCollectionsCards(); track $index) {
                 <app-collection [collection]="item"></app-collection>
             }
             @empty {
@@ -25,7 +25,7 @@
     <section>
         <h1>Oblubene</h1>
         <div class="products-grid cards">
-            @for (item of favoritesCards; track $index) {
+            @for (item of sectionFavoritesCards(); track $index) {
                 <app-card [cardInfo]="item"></app-card>
             }
             @empty {

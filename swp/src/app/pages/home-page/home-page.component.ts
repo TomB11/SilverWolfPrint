@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { BillboardComponent } from "../../components/billboard/billboard.component";
 import { CardComponent } from "../../components/card/card.component";
 import { ApiCallsService } from '../../services/api-calls.service';
@@ -8,11 +8,11 @@ import { Collection } from '../../interfaces/collection';
 import { CollectionComponent } from "../../components/collection/collection.component";
 import { PrintItem } from '../../interfaces/printItem';
 import { Store } from '@ngrx/store';
-import { loadProducts, setState } from '../../state/appState/appState.actions';
+import { loadProducts } from '../../state/appState/appState.actions';
 import { AppState } from '../../interfaces/app';
 import { StateDataService } from '../../services/state-data.service';
-import { selectAppState } from '../../state/appState/appState.selectors';
-import { map } from 'rxjs/operators';
+import { selectAppState, selectProducts } from '../../state/appState/appState.selectors';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home-page',
@@ -21,45 +21,66 @@ import { map } from 'rxjs/operators';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
-export class HomePageComponent implements OnInit {
-  newsCards: Card[] = [];
-  favoritesCards: Card[] = [];
-  collectionsCards: Collection[] = [];
+export class HomePageComponent implements OnInit, OnDestroy {
+  sectionNewCards = signal<Card[]>([]);
+  sectionFavoritesCards = signal<Card[]>([]);
+  sectionCollectionsCards = signal<Collection[]>([]); 
+  productsLoaded = false;
+
   appState = inject(Store<{ appState: AppState }>)
+  products$: any
 
   constructor(public apiService: ApiCallsService, public stateDataService: StateDataService) { 
-    this.collectionsCards = apiService.collections;
+    this.sectionCollectionsCards.set(apiService.collections);
   }
 
   ngOnInit(): void {
-    if (this.stateDataService.isSessionStorageFullfilled()) {
-      this.stateDataService.getStateData();
-      this.setAllSections(false)
+    if (this.stateDataService.isLocalStorageFullfilled()) {
+      const state: AppState | null = this.stateDataService.getStateData();
+      if (state) {
+        console.log('State loaded from localStorage:', state);
+        this.setAllSections(false, state.products);
+      } else {
+        console.warn('No valid state found in localStorage');
+        this.productsLoaded = false;
+      }
     } else {
-      this.appState.dispatch(loadProducts());
-      this.setAllSections(true)
+      this.products$ = this.appState.select(selectProducts).pipe(take(1)).subscribe(products => {
+        console.log('Products from store:', products);
+        if (!products || products.length === 0) {
+          this.appState.dispatch(loadProducts());
+          console.log('this.apiService.productsData:', this.apiService.productsData());
+          if (this.apiService.productsData().length > 0) {
+              this.setAllSections(true, this.apiService.productsData());
+            } else {
+              this.productsLoaded = false;
+            }
+        } else {
+          console.log('Products found:', this.apiService.productsData());
+          this.productsLoaded = true;
+        }
+      }, error => {
+        console.error('Error loading products:', error || 'Unknown error');
+        this.productsLoaded = false;
+      })
     }
   }
 
-  setAllSections(needToSaveToLS: boolean) {
-    const sub = this.appState.select(selectAppState).pipe(
-      map((state: AppState) => state.products)
-    ).subscribe((productsData: any) => {
-      if (productsData.length > 0) {
-        if (needToSaveToLS) {
-          const state: AppState = {
-            products: productsData,
-            cart: [],
-            loading: false,
-            error: null
-          };
-          this.stateDataService.setSessionStorageStateData(state);
-        }
-        this.newsCards = this.fillSectionsWithProducts(productsData).slice(3, 9);
-        this.favoritesCards = this.fillSectionsWithProducts(productsData).slice(0, 6);
+  setAllSections(needToSaveToLS: boolean, productsData: PrintItem[]) {
+    if (productsData.length > 0) {
+      if (needToSaveToLS) {
+        const state: AppState = {
+          products: productsData,
+          cart: [],
+          loading: false,
+          error: null
+        };
+        this.stateDataService.setLocalStorageStateData(state);
       }
-    });
-    sub.unsubscribe();
+      this.productsLoaded = true;
+      this.sectionNewCards.set(this.fillSectionsWithProducts(productsData).slice(3, 9));
+      this.sectionFavoritesCards.set(this.fillSectionsWithProducts(productsData).slice(0, 6));
+    }
   }
 
   fillSectionsWithProducts(jsonData: PrintItem[]) {
@@ -71,5 +92,9 @@ export class HomePageComponent implements OnInit {
     }));
 
     return sortedItems
+  }
+
+  ngOnDestroy(): void {
+    this.products$?.unsubscribe();
   }
 }

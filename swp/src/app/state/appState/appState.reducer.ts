@@ -27,8 +27,9 @@ const reducer = createReducer(
     })),
     on(AppStateActions.loadProductsSuccess, (state, { products }) => ({
         ...state,
-        products,
+        products, // <--- must update!
         loading: false,
+        error: null
     })),
     on(AppStateActions.loadProductsFailure, (state, { error }) => ({
         ...state,

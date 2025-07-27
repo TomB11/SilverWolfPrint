@@ -5,5 +5,5 @@ export const selectAppState = (state: { appState: AppState }) => state.appState;
 
 export const selectProducts = createSelector(
   selectAppState,
-  (state: AppState) => state
+  (state: AppState) => state.products
 );
