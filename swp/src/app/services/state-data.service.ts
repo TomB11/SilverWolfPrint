@@ -9,8 +9,6 @@ import { setState } from '../state/appState/appState.actions';
 export class StateDataService {
   appState = inject(Store<{ appState: AppState }>)
 
-  constructor() { }
-
   setLocalStorageStateData(state: AppState): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.setItem('appState', JSON.stringify(state));
