@@ -11,8 +11,9 @@ import { Store } from '@ngrx/store';
 import { loadProducts } from '../../state/appState/appState.actions';
 import { AppState } from '../../interfaces/app';
 import { StateDataService } from '../../services/state-data.service';
-import { selectAppState, selectProducts } from '../../state/appState/appState.selectors';
-import { map, take } from 'rxjs/operators';
+import { selectProducts } from '../../state/appState/appState.selectors';
+import { take } from 'rxjs/operators';
+import { AppSignalStore } from '../../store/app.store';
 
 @Component({
   selector: 'app-home-page',
@@ -27,14 +28,19 @@ export class HomePageComponent implements OnInit, OnDestroy {
   sectionCollectionsCards = signal<Collection[]>([]); 
   productsLoaded = false;
 
+  appSignalStore = inject(AppSignalStore);
   appState = inject(Store<{ appState: AppState }>)
+  apiService = inject(ApiCallsService);
+  stateDataService = inject(StateDataService);
   products$: any
 
-  constructor(public apiService: ApiCallsService, public stateDataService: StateDataService) { 
-    this.sectionCollectionsCards.set(apiService.collections);
+  constructor() { 
+    this.sectionCollectionsCards.set(this.apiService.collections);
   }
 
   ngOnInit(): void {
+    console.log('HomePageComponent initialized', this.appSignalStore.app());
+
     if (this.stateDataService.isLocalStorageFullfilled()) {
       const state: AppState | null = this.stateDataService.getStateData();
       if (state) {

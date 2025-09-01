@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Collection } from '../interfaces/collection';
 import jsonData from '../../../public/productsData.json';
 import { PrintItem } from '../interfaces/printItem';
@@ -11,16 +11,15 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiCallsService {
+  http = inject(HttpClient);
+  
   productsData = signal<PrintItem[]>([]);
-
   collections: Collection[] = [
     { id: 'col1', title: 'Organizere', url: 'products/organizere' },
     { id: 'col2', title: 'Doplnky', url: 'products/doplnky' },
     { id: 'col3', title: 'Miniatury', url: 'products/miniatury' },
     { id: 'col4', title: 'Ine', url: 'products/ine' },
   ]
-
-  constructor(private http: HttpClient) { }
 
   getAllProductsFromServer(): Observable<PrintItem[]> {
     console.log('getAllProductsFromServer called');
