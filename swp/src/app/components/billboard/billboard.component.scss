@@ -14,7 +14,7 @@
     }
 
     .billboard-content {
-        flex: 1;
+        flex: 2;
         color: $primary-color;
         padding: 20px;
 
@@ -23,8 +23,22 @@
             font-size: 2rem;
         }
 
+        p {
+            width: 75%;
+        }
+
         .button {
             margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            p {
+                width: 100%;
+            }
         }
     }
 }

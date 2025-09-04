@@ -39,6 +39,7 @@ const reducer = createReducer(
     on(AppStateActions.addToCart, (state, { productId, quantity }) => {
         const existing = state.cart.find(item => item.productId === productId);
         let newCart;
+
         if (existing) {
             newCart = state.cart.map(item =>
                 item.productId === productId
@@ -46,7 +47,21 @@ const reducer = createReducer(
                     : item
             );
         } else {
-            newCart = [...state.cart, { productId, quantity }];
+            // Find the product details from products array
+            const product = state.products.find(p => String(p.id) === productId);
+            if (!product) {
+                // If product not found, do not add to cart
+                return state;
+            }
+            // Create a full CartItem object
+            const newCartItem = {
+                productId,
+                quantity,
+                name: product.name,
+                price: product.price,
+                image: product.image
+            };
+            newCart = [...state.cart, newCartItem];
         }
         return { ...state, cart: newCart };
     }),

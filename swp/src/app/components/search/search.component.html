@@ -16,7 +16,13 @@
             <ul>
                 @for (item of searchResults(); track $index) {
                 <li (click)="clickResultItem(item)">
-                    <img class="image" [src]="item.image ? item.image : '/assets/default.jpg'" alt="{{ item.name }}" />
+                    <img 
+                        class="image" 
+                        [src]="item.image ? item.image : '/assets/default.jpg'" 
+                        alt="{{ item.name }}" 
+                        animate.enter="pop-in"
+                        animate.leave="pop-out"
+                     />
                     <div class="text-container">
                         <span class="name">{{ item.name }}</span>
                         <span class="category">{{ item.category }}</span>

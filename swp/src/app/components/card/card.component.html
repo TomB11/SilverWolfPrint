@@ -1,5 +1,8 @@
 <div class="card" [id]="cardInfo().id">
-    <img [src]="cardInfo().imageUrl ? cardInfo().imageUrl : '/assets/default.jpg'" class="card-img-top" [alt]="cardInfo().title">
+    <img [src]="cardInfo().imageUrl ? cardInfo().imageUrl : '/assets/default.jpg'" 
+        class="card-img-top" 
+        [alt]="cardInfo().title"
+    >
     <div class="card-body">
         <h5 class="card-title">{{ cardInfo().title }}</h5>
         <p class="card-text">{{ cardInfo().description }}</p>

@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { map, Subscription } from 'rxjs';
 import { AppState } from '../../interfaces/app';
 import { StateDataService } from '../../services/state-data.service';
+import { CartItem } from '../../interfaces/cart';
 
 @Component({
   selector: 'app-detail-page',
@@ -16,6 +17,8 @@ import { StateDataService } from '../../services/state-data.service';
 })
 export class DetailPageComponent implements OnInit {
   appState = inject(Store<{ appState: AppState }>)
+  stateDataService = inject(StateDataService);
+
   findProductSubs = new Subscription();
   id = input.required<string>();
   selectedItem: PrintItem = {
@@ -28,11 +31,8 @@ export class DetailPageComponent implements OnInit {
     stock: 0
   };
 
-  constructor(private stateDataService: StateDataService) {
-    this.stateDataService.getStateData();
-  }
-
   ngOnInit(): void {
+    this.stateDataService.getStateData();
     console.log('DetailPageComponent initialized with ID:', this.id());
     console.log('DetailPageComponent state', this.appState);
 
@@ -45,5 +45,16 @@ export class DetailPageComponent implements OnInit {
     })
 
     this.findProductSubs.unsubscribe();
+  }
+
+  addToCart() {
+    let product : CartItem = {
+      productId: String(this.selectedItem.id),
+      name: this.selectedItem.name,
+      price: this.selectedItem.price,
+      image: this.selectedItem.image,
+      quantity: 1
+    };
+    this.stateDataService.addToCart(product);
   }
 }

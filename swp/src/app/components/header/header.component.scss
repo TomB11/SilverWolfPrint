@@ -65,4 +65,40 @@
             }
         }
     } 
+
+    @media screen and (max-width: 768px) {
+        .dashboard-header-content {
+            .dashboard-header-title {
+                display: none;
+            }
+
+            .navbar {
+                justify-content: center;
+
+                .navbar-nav {
+                    a {
+                        margin: 0 10px;
+                    }
+                }
+            }
+        }
+        
+    }
+
+    @media screen and (max-width: 480px) {
+        .dashboard-header-content {
+             .navbar {
+                justify-content: center;
+                width: 100%;
+
+                .navbar-nav {
+                    a {
+                        margin: 0 5px;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+        
+    }
 }
