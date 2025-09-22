@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const app = express();
-mongoose.connect('mongodb+srv://tbaranek82:rmjk6QEFKW73Of3M@training.w2gml.mongodb.net/SWP?retryWrites=true&w=majority&appName=Training')
+mongoose.connect('mongodb+srv://tbaranek82:LGpOB3rSWHhHaJKN@training.w2gml.mongodb.net/SWP?retryWrites=true&w=majority&appName=Training')
 .then(() => {
     console.log('Connection ok')
 })

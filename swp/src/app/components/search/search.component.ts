@@ -39,7 +39,7 @@ export class SearchComponent {
   clickResultItem(result: PrintItem): void {
     this.searched.set(false);
     this.searchResults.set([]);
-    this.routeNav.navigate(['/detail', result.id]);
+    this.routeNav.navigate(['/detail', result._id]);
   }
 
   closeSearch(): void {

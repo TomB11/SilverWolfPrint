@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "_id": 1,
         "name": "Wireless Headphones",
         "description": "High-quality wireless headphones with noise cancellation.",
         "price": 59.99,
@@ -9,7 +9,7 @@
         "stock": 25
     },
     {
-        "id": 2,
+        "_id": 2,
         "name": "Stainless Steel Water Bottle",
         "description": "Eco-friendly water bottle, keeps drinks cold for 24 hours.",
         "price": 18.5,
@@ -18,7 +18,7 @@
         "stock": 50
     },
     {
-        "id": 3,
+        "_id": 3,
         "name": "Bluetooth Speaker",
         "description": "Portable Bluetooth speaker with deep bass.",
         "price": 34.99,
@@ -27,7 +27,7 @@
         "stock": 40
     },
     {
-        "id": 4,
+        "_id": 4,
         "name": "Yoga Mat",
         "description": "Non-slip yoga mat for all types of exercises.",
         "price": 22.0,
@@ -36,7 +36,7 @@
         "stock": 35
     },
     {
-        "id": 5,
+        "_id": 5,
         "name": "LED Desk Lamp",
         "description": "Adjustable LED desk lamp with touch control.",
         "price": 27.75,
@@ -45,7 +45,7 @@
         "stock": 60
     },
     {
-        "id": 6,
+        "_id": 6,
         "name": "Classic Backpack",
         "description": "Durable backpack suitable for school or travel.",
         "price": 31.99,
@@ -54,7 +54,7 @@
         "stock": 45
     },
     {
-        "id": 7,
+        "_id": 7,
         "name": "Ceramic Coffee Mug",
         "description": "Large ceramic mug, microwave and dishwasher safe.",
         "price": 12.5,
@@ -63,7 +63,7 @@
         "stock": 80
     },
     {
-        "id": 8,
+        "_id": 8,
         "name": "Fitness Tracker",
         "description": "Waterproof fitness tracker with heart rate monitor.",
         "price": 44.99,
@@ -72,7 +72,7 @@
         "stock": 30
     },
     {
-        "id": 9,
+        "_id": 9,
         "name": "Cotton T-Shirt",
         "description": "Soft cotton t-shirt available in multiple colors.",
         "price": 15.0,
@@ -81,7 +81,7 @@
         "stock": 100
     },
     {
-        "id": 10,
+        "_id": 10,
         "name": "Wireless Mouse",
         "description": "Ergonomic wireless mouse with adjustable DPI.",
         "price": 19.99,

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AppState } from '../interfaces/app';
 import { Store } from '@ngrx/store';
-import { setState } from '../state/appState/appState.actions';
+import { loadProducts, setState } from '../state/appState/appState.actions';
 import { CartItem } from '../interfaces/cart';
 
 @Injectable({
@@ -30,9 +30,12 @@ export class StateDataService {
 
   getStateData(): AppState | null {
     if (typeof window !== 'undefined' && window.localStorage) {
+      console.log('Getting state data from localStorage');
       const savedState = localStorage.getItem('appState');
       if (savedState !== null) {
+        console.log('Saved state found in localStorage');
         const parsedState: AppState = JSON.parse(savedState);
+        this.appState.dispatch(loadProducts());
         this.appState.dispatch(setState({ state: parsedState }));
         return parsedState;
       }
@@ -49,7 +52,7 @@ export class StateDataService {
       error: null
     };
 
-    const product = currentState.products.find(p => String(p.id) === selectedProduct.productId);
+    const product = currentState.products.find(p => String(p._id) === selectedProduct.productId);
     if (!product) {
       // Optionally handle the case where the product is not found
       return;

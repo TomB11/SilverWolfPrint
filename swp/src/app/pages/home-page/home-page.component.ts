@@ -39,37 +39,47 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('HomePageComponent initialized', this.appSignalStore.app());
+    if (this.tryLoadFromLocalStorage()) return;
+    this.loadProductsFromStoreOrApi();
+  }
 
-    if (this.stateDataService.isLocalStorageFullfilled()) {
-      const state: AppState | null = this.stateDataService.getStateData();
-      if (state) {
-        console.log('State loaded from localStorage:', state);
-        this.setAllSections(false, state.products);
-      } else {
-        console.warn('No valid state found in localStorage');
-        this.productsLoaded = false;
-      }
+  private tryLoadFromLocalStorage(): boolean {
+    if (!this.stateDataService.isLocalStorageFullfilled()) return false;
+    const state: AppState | null = this.stateDataService.getStateData();
+    if (state) {
+      console.log('State loaded from localStorage:', state);
+      this.setAllSections(false, state.products);
+      return true;
     } else {
-      this.products$ = this.appState.select(selectProducts).pipe(take(1)).subscribe(products => {
+      console.warn('No valid state found in localStorage');
+      this.productsLoaded = false;
+      return false;
+    }
+  }
+
+  private loadProductsFromStoreOrApi(): void {
+    this.products$ = this.appState.select(selectProducts).pipe(take(1)).subscribe({
+      next: products => {
         console.log('Products from store:', products);
         if (!products || products.length === 0) {
           this.appState.dispatch(loadProducts());
-          console.log('this.apiService.productsData:', this.apiService.productsData());
-          if (this.apiService.productsData().length > 0) {
-              this.setAllSections(true, this.apiService.productsData());
-            } else {
-              this.productsLoaded = false;
-            }
+          const apiProducts = this.apiService.productsData();
+          console.log('this.apiService.productsData:', apiProducts);
+          if (apiProducts.length > 0) {
+            this.setAllSections(true, apiProducts);
+          } else {
+            this.productsLoaded = false;
+          }
         } else {
           console.log('Products found:', this.apiService.productsData());
           this.productsLoaded = true;
         }
-      }, error => {
+      },
+      error: error => {
         console.error('Error loading products:', error || 'Unknown error');
         this.productsLoaded = false;
-      })
-    }
+      }
+    });
   }
 
   setAllSections(needToSaveToLS: boolean, productsData: PrintItem[]) {
@@ -90,8 +100,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   fillSectionsWithProducts(jsonData: PrintItem[]) {
-    const sortedItems: Card[] = jsonData.map(item => ({
-      id: item.id,
+    console.log('Filling sections with products:', jsonData);
+    const sortedItems: Card[] = jsonData.map((item: any) => ({
+      id: item._id,
       title: item.name,
       description: item.description,
       imageUrl: item.image

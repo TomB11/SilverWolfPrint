@@ -64,6 +64,20 @@ input {
     width: 100%;
 }
 
+a {
+    color: $text-color;
+    text-decoration: none;
+}
+
+.card-link {
+    transition: transform 0.3s, box-shadow 0.3s;
+    &:hover {
+        display: block;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+}
+
 @media screen and (max-width: 767px) {
     body {
         padding: 0;

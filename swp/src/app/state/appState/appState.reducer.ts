@@ -48,7 +48,7 @@ const reducer = createReducer(
             );
         } else {
             // Find the product details from products array
-            const product = state.products.find(p => String(p.id) === productId);
+            const product = state.products.find(p => String(p._id) === productId);
             if (!product) {
                 // If product not found, do not add to cart
                 return state;
