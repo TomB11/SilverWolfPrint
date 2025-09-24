@@ -1,6 +1,8 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { PrintItem } from '../../interfaces/printItem';
 import { CommonModule } from '@angular/common';
+import { StateDataService } from '../../services/state-data.service';
+import { CartItem } from '../../interfaces/cart';
 
 @Component({
   selector: 'app-print-item-detail',
@@ -11,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PrintItemDetailComponent implements OnInit {
   itemData = input.required<PrintItem>();
+  stateService = inject(StateDataService);
 
   goBack() {
     window.history.back();
@@ -22,6 +25,13 @@ export class PrintItemDetailComponent implements OnInit {
 
   addToCart(item: PrintItem) {
     console.log('Add to cart clicked for item:', this.itemData());
-    // Implement add to cart functionality here
+    let product : CartItem = {
+      productId: String(this.itemData()._id),
+      name: this.itemData().name,
+      price: this.itemData().price,
+      image: this.itemData().image,
+      quantity: 1
+    };
+    this.stateService.addToCart(product);
   }
 }

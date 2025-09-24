@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { httpResource } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CartItem } from '../../interfaces/cart';
 
 @Component({
@@ -9,9 +8,7 @@ import { CartItem } from '../../interfaces/cart';
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss'
 })
-export class CartPageComponent {
-  http = inject(httpResource)
-
+export class CartPageComponent implements OnInit, OnDestroy {
   cartItems = signal<CartItem[]>([
     { productId: '1', name: 'Product 1', price: 100, image: null, quantity: 2 },
     { productId: '2', name: 'Product 2', price: 200, image: null, quantity: 1 },
@@ -22,18 +19,9 @@ export class CartPageComponent {
     // Fetch cart items from a service or state management
     // this.cartItems = this.cartService.getCartItems();
     // this.updateCartTotal();
-    const loadCart = httpResource<CartItem[]>(() => ({
-        url: 'http://localhost:3000/api/cart',
-        method: 'GET'
-      }),
-      {
-        parse: (value: unknown) => {
-          const response = value as CartItem[];
-          this.cartItems.set(response);
-          return response;
-        }
-      }
-    );
   }
 
+  ngOnDestroy(): void {
+    // Cleanup if necessary
+  }
 }

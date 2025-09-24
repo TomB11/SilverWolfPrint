@@ -47,17 +47,6 @@ export class DetailPageComponent implements OnInit {
     })
   }
 
-  addToCart() {
-    let product : CartItem = {
-      productId: String(this.selectedItem._id),
-      name: this.selectedItem.name,
-      price: this.selectedItem.price,
-      image: this.selectedItem.image,
-      quantity: 1
-    };
-    this.stateDataService.addToCart(product);
-  }
-
   ngOnDestroy(): void {
     this.findProductSubs.unsubscribe();
   }

@@ -5,6 +5,7 @@ import { AppState } from '../../interfaces/app';
 export const initialState: AppState = {
     products: [],
     cart: [],
+    isCartVisible: false,
     loading: false,
     error: null,
 };
@@ -63,7 +64,7 @@ const reducer = createReducer(
             };
             newCart = [...state.cart, newCartItem];
         }
-        return { ...state, cart: newCart };
+        return { ...state, cart: newCart, isCartVisible: true };
     }),
     on(AppStateActions.removeFromCart, (state, { productId }) => ({
         ...state,

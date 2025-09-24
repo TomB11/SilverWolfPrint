@@ -54,9 +54,9 @@ export class StateDataService {
 
     const product = currentState.products.find(p => String(p._id) === selectedProduct.productId);
     if (!product) {
-      // Optionally handle the case where the product is not found
       return;
     }
+
     const cartItem = {
       productId: selectedProduct.productId,
       quantity: selectedProduct.quantity,
@@ -67,11 +67,13 @@ export class StateDataService {
 
     this.appState.dispatch(setState({ state: {
       ...currentState,
-      cart: [...currentState.cart, cartItem]
+      cart: [...currentState.cart, cartItem],
+      isCartVisible: true
     }}));
     this.setLocalStorageStateData({
       ...currentState,
-      cart: [...currentState.cart, cartItem]
+      cart: [...currentState.cart, cartItem],
+      isCartVisible: true
     });
   }
 }

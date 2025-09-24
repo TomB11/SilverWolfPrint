@@ -41,6 +41,7 @@ export const AppSignalStore = signalStore(
                                 ...store.app, 
                                 products: products, 
                                 cart: typeof store.app.cart === 'function' ? store.app.cart() : store.app.cart,
+                                isCartVisible: typeof store.app.isCartVisible === 'function' ? store.app.isCartVisible() : store.app.isCartVisible,
                                 error: typeof store.app.error === 'function' ? store.app.error() : store.app.error,
                                 loading: false 
                             }
@@ -52,6 +53,7 @@ export const AppSignalStore = signalStore(
                             app: { 
                                 ...store.app, 
                                 products: typeof store.app.products === 'function' ? store.app.products() : store.app.products,
+                                isCartVisible: typeof store.app.isCartVisible === 'function' ? store.app.isCartVisible() : store.app.isCartVisible,
                                 cart: typeof store.app.cart === 'function' ? store.app.cart() : store.app.cart,
                                 loading: false, 
                                 error 
