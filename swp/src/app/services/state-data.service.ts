@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AppState } from '../interfaces/app';
 import { Store } from '@ngrx/store';
-import { loadProducts, setState } from '../state/appState/appState.actions';
+import { loadCollections, loadProducts, setState } from '../state/appState/appState.actions';
 import { CartItem } from '../interfaces/cart';
 
 @Injectable({
@@ -30,11 +30,10 @@ export class StateDataService {
 
   getStateData(): AppState | null {
     if (typeof window !== 'undefined' && window.localStorage) {
-      console.log('Getting state data from localStorage');
       const savedState = localStorage.getItem('appState');
       if (savedState !== null) {
-        console.log('Saved state found in localStorage');
         const parsedState: AppState = JSON.parse(savedState);
+        this.appState.dispatch(loadCollections());
         this.appState.dispatch(loadProducts());
         this.appState.dispatch(setState({ state: parsedState }));
         return parsedState;
@@ -65,15 +64,22 @@ export class StateDataService {
       image: product.image
     };
 
-    this.appState.dispatch(setState({ state: {
-      ...currentState,
-      cart: [...currentState.cart, cartItem],
-      isCartVisible: true
-    }}));
-    this.setLocalStorageStateData({
-      ...currentState,
-      cart: [...currentState.cart, cartItem],
-      isCartVisible: true
-    });
+    this.appState.dispatch(setState({ state: {...currentState, cart: [...currentState.cart, cartItem], isCartVisible: true}}));
+    this.setLocalStorageStateData({...currentState, cart: [...currentState.cart, cartItem], isCartVisible: true});
   }
+
+  removeFromCart(productId: string): void {
+    const savedState = localStorage.getItem('appState');
+    let currentState: AppState = savedState ? JSON.parse(savedState) : {
+      cart: [],
+      products: [],
+      loading: false,
+      error: null
+    };
+
+    const updatedCart = currentState.cart.filter(item => item.productId !== productId);
+
+    this.appState.dispatch(setState({ state: {...currentState, cart: updatedCart, isCartVisible: updatedCart.length > 0}}));
+    this.setLocalStorageStateData({...currentState,cart: updatedCart, isCartVisible: updatedCart.length > 0});
+  } 
 }

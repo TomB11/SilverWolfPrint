@@ -14,30 +14,40 @@ export class ApiCallsService {
   http = inject(HttpClient);
   
   productsData = signal<PrintItem[]>([]);
-  collections: Collection[] = [
-    { id: 'col1', title: 'Organizere', url: 'products/organizere' },
-    { id: 'col2', title: 'Doplnky', url: 'products/doplnky' },
-    { id: 'col3', title: 'Miniatury', url: 'products/miniatury' },
-    { id: 'col4', title: 'Ine', url: 'products/ine' },
+  collections = signal<Collection[]>([]);
+  defaultCollections: Collection[] = [
+    { id: 'col1', title: 'Organizer', code: '1' },
+    { id: 'col2', title: 'Accesories', code: '2' },
+    { id: 'col3', title: 'Miniatures', code: '3' },
+    { id: 'col4', title: 'Others', code: '4' }
   ]
 
   getAllProductsFromServer(): Observable<PrintItem[]> {
-    console.log('getAllProductsFromServer called');
     return this.http.get<{message: string, products: PrintItem[]}>('http://localhost:3000/api/printProducts').pipe(
       map((data: any) => {
-        console.log('getAllProductsFromServer Fetched products:', data);
         this.productsData.set(data.products || []);
         return this.productsData().length ? this.productsData() : jsonData;
       }),
       catchError((error) => {
-        console.error('Error fetching products:', error);
         return of(jsonData);
       })
     );
   }
 
+  getCollectionsFromServer(): Observable<Collection[]> {
+    return this.http.get<{message: string, collections: Collection[]}>('http://localhost:3000/api/collections').pipe(
+      map((data: any) => {
+        this.collections.set(data.collections || this.defaultCollections);
+        return this.collections();
+      }),
+      catchError((error) => {
+        this.collections.set(this.defaultCollections);
+        return of(this.collections());
+      })
+    )
+  }
+
   getProducts(): Observable<PrintItem[]> {
-    console.log('getProducts:', this.productsData());
     return of(this.productsData());
   }
 }

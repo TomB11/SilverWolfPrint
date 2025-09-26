@@ -23,10 +23,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const PrintProducts = require('./models/printProducts');
+const Categories = require('./models/categories');
 
 app.get('/api/printProducts',(req, res, next) => {
     PrintProducts.find({}).then((data) => {
-        console.log('Fetched products:', data);
         res.status(200).json({
             message: 'Products fetched successfully',
             products: data
@@ -34,6 +34,20 @@ app.get('/api/printProducts',(req, res, next) => {
     }).catch(error => {
         res.status(500).json({
             message: 'Fetching products failed',
+            error: error
+        });
+    });
+});
+
+app.get('/api/collections',(req, res, next) => {
+    Categories.find({}).then((data) => {
+        res.status(200).json({
+            message: 'Categories fetched successfully',
+            collections: data
+        });
+    }).catch(error => {
+        res.status(500).json({
+            message: 'Fetching categories failed',
             error: error
         });
     });

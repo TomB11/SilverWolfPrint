@@ -12,6 +12,7 @@ type signalAppState = {
 const initialSignalAppState: signalAppState = {
     app: {
         products: [],
+        collections: [],
         cart: [],
         loading: false,
         error: null
@@ -28,6 +29,7 @@ export const AppSignalStore = signalStore(
             async loadAll() {
                 patchState(store, { app: { 
                     products: typeof store.app.products === 'function' ? store.app.products() : store.app.products,
+                    collections: typeof store.app.collections === 'function' ? store.app.collections() : store.app.collections,
                     cart: typeof store.app.cart === 'function' ? store.app.cart() : store.app.cart,
                     loading: true,
                     error: typeof store.app.error === 'function' ? store.app.error() : store.app.error
@@ -40,6 +42,7 @@ export const AppSignalStore = signalStore(
                             app: { 
                                 ...store.app, 
                                 products: products, 
+                                collections: typeof store.app.collections === 'function' ? store.app.collections() : store.app.collections,
                                 cart: typeof store.app.cart === 'function' ? store.app.cart() : store.app.cart,
                                 isCartVisible: typeof store.app.isCartVisible === 'function' ? store.app.isCartVisible() : store.app.isCartVisible,
                                 error: typeof store.app.error === 'function' ? store.app.error() : store.app.error,
@@ -53,6 +56,7 @@ export const AppSignalStore = signalStore(
                             app: { 
                                 ...store.app, 
                                 products: typeof store.app.products === 'function' ? store.app.products() : store.app.products,
+                                collections: typeof store.app.collections === 'function' ? store.app.collections() : store.app.collections,
                                 isCartVisible: typeof store.app.isCartVisible === 'function' ? store.app.isCartVisible() : store.app.isCartVisible,
                                 cart: typeof store.app.cart === 'function' ? store.app.cart() : store.app.cart,
                                 loading: false, 

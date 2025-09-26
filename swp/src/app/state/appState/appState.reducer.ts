@@ -4,6 +4,7 @@ import { AppState } from '../../interfaces/app';
 
 export const initialState: AppState = {
     products: [],
+    collections: [],
     cart: [],
     isCartVisible: false,
     loading: false,
@@ -16,6 +17,7 @@ const reducer = createReducer(
         return {
             ...state,
             products: action.state.products,
+            collections: action.state.collections,
             cart: action.state.cart,
             loading: action.state.loading,
             error: action.state.error
@@ -33,6 +35,22 @@ const reducer = createReducer(
         error: null
     })),
     on(AppStateActions.loadProductsFailure, (state, { error }) => ({
+        ...state,
+        loading: false,
+        error,
+    })),
+    on(AppStateActions.loadCollections, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+    on(AppStateActions.loadCollectionsSuccess, (state, { collections }) => ({
+        ...state,
+        collections, // <--- must update!
+        loading: false,
+        error: null
+    })),
+    on(AppStateActions.loadCollectionsFailure, (state, { error }) => ({
         ...state,
         loading: false,
         error,

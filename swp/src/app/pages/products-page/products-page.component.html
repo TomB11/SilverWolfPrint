@@ -1,9 +1,10 @@
 <div>
     <main class="container">
         <section>
-            <h1>{{ productsTitle | uppercase }}</h1>
+            <h1 class="collection-title">{{ productsTitle() }}</h1>
+            <hr>
             <div class="products-grid">
-                @for (item of productCards; track $index) {
+                @for (item of productsCard(); track $index) {
                     <app-card [cardInfo]="item"></app-card>
                 }
                 @empty {

@@ -9,6 +9,7 @@ import { PrintItem } from '../../interfaces/printItem';
 @Injectable()
 export class AppStateEffects {
     loadProducts$
+    loadCollections$
 
     constructor(
         private actions$: Actions,
@@ -27,6 +28,25 @@ export class AppStateEffects {
                   catchError(error => {
                     console.error('Error loading products:', error);
                     return of(AppStateActions.loadProductsFailure({ error }));
+                  })
+                )
+              )
+            )
+          );
+
+        this.loadCollections$ = createEffect(() =>
+            this.actions$.pipe(
+              ofType(AppStateActions.loadCollections),
+              tap(() => console.log('Effect triggered: loadCollections')),
+              exhaustMap(() =>
+                this.apiCallService.getCollectionsFromServer().pipe(
+                  map((collections: any[]) => {
+                    console.log('Collections loaded from server:', collections);  
+                    return AppStateActions.loadCollectionsSuccess({ collections });
+                  }),
+                  catchError(error => {
+                    console.error('Error loading collections:', error);
+                    return of(AppStateActions.loadCollectionsFailure({ error }));
                   })
                 )
               )

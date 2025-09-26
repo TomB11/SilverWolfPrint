@@ -8,11 +8,11 @@ import { Collection } from '../../interfaces/collection';
 import { CollectionComponent } from "../../components/collection/collection.component";
 import { PrintItem } from '../../interfaces/printItem';
 import { Store } from '@ngrx/store';
-import { loadProducts } from '../../state/appState/appState.actions';
+import { loadCollections, loadProducts } from '../../state/appState/appState.actions';
 import { AppState } from '../../interfaces/app';
 import { StateDataService } from '../../services/state-data.service';
-import { selectProducts } from '../../state/appState/appState.selectors';
-import { take } from 'rxjs/operators';
+import { selectCollections, selectProducts } from '../../state/appState/appState.selectors';
+import { concatMap, filter, take, withLatestFrom } from 'rxjs/operators';
 import { AppSignalStore } from '../../store/app.store';
 
 @Component({
@@ -32,61 +32,64 @@ export class HomePageComponent implements OnInit, OnDestroy {
   appState = inject(Store<{ appState: AppState }>)
   apiService = inject(ApiCallsService);
   stateDataService = inject(StateDataService);
-  products$: any
-
-  constructor() { 
-    this.sectionCollectionsCards.set(this.apiService.collections);
-  }
 
   ngOnInit(): void {
     if (this.tryLoadFromLocalStorage()) return;
-    this.loadProductsFromStoreOrApi();
+    this.loadCollectionsAndProducts()
   }
 
   private tryLoadFromLocalStorage(): boolean {
     if (!this.stateDataService.isLocalStorageFullfilled()) return false;
     const state: AppState | null = this.stateDataService.getStateData();
     if (state) {
-      console.log('State loaded from localStorage:', state);
-      this.setAllSections(false, state.products);
+      this.setAllSections(false, state);
       return true;
     } else {
-      console.warn('No valid state found in localStorage');
       this.productsLoaded = false;
       return false;
     }
   }
 
-  private loadProductsFromStoreOrApi(): void {
-    this.products$ = this.appState.select(selectProducts).pipe(take(1)).subscribe({
-      next: products => {
-        console.log('Products from store:', products);
-        if (!products || products.length === 0) {
-          this.appState.dispatch(loadProducts());
-          const apiProducts = this.apiService.productsData();
-          console.log('this.apiService.productsData:', apiProducts);
-          if (apiProducts.length > 0) {
-            this.setAllSections(true, apiProducts);
+  loadCollectionsAndProducts(): void {
+    this.appState.select(selectCollections).pipe(
+      take(1),
+      concatMap(collections => {
+        if (!collections || collections.length === 0) {
+          this.appState.dispatch(loadCollections());
+          const apiCollections = this.apiService.collections();
+          if (apiCollections.length > 0) {
+            this.sectionCollectionsCards.set(apiCollections);
           } else {
-            this.productsLoaded = false;
+            this.sectionCollectionsCards.set([]);
           }
         } else {
-          console.log('Products found:', this.apiService.productsData());
-          this.productsLoaded = true;
+          this.sectionCollectionsCards.set(collections);
         }
-      },
-      error: error => {
-        console.error('Error loading products:', error || 'Unknown error');
-        this.productsLoaded = false;
-      }
+
+        this.appState.select(selectProducts).pipe(take(1)).subscribe(products => {
+          if (!products || products.length === 0) {
+            this.appState.dispatch(loadProducts());
+          }
+        });
+        
+        return this.appState.select(selectProducts).pipe(
+          filter(products => !!products && products.length > 0),
+          take(1),
+          withLatestFrom(this.appState.select((state) => state.appState))
+        );
+      })
+    ).subscribe(([products, state]) => {
+      this.productsLoaded = true;
+      this.setAllSections(true, state);
     });
   }
 
-  setAllSections(needToSaveToLS: boolean, productsData: PrintItem[]) {
-    if (productsData.length > 0) {
+  setAllSections(needToSaveToLS: boolean, stateData: AppState) {
+    if (stateData.products.length > 0) {
       if (needToSaveToLS) {
         const state: AppState = {
-          products: productsData,
+          products: stateData.products,
+          collections: stateData.collections,
           cart: [],
           loading: false,
           error: null
@@ -94,13 +97,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.stateDataService.setLocalStorageStateData(state);
       }
       this.productsLoaded = true;
-      this.sectionNewCards.set(this.fillSectionsWithProducts(productsData).slice(3, 9));
-      this.sectionFavoritesCards.set(this.fillSectionsWithProducts(productsData).slice(0, 6));
+      this.sectionCollectionsCards.set(stateData.collections);
+      this.sectionNewCards.set(this.fillSectionsWithProducts(stateData.products).slice(3, 9));
+      this.sectionFavoritesCards.set(this.fillSectionsWithProducts(stateData.products).slice(0, 6));
     }
   }
 
   fillSectionsWithProducts(jsonData: PrintItem[]) {
-    console.log('Filling sections with products:', jsonData);
     const sortedItems: Card[] = jsonData.map((item: any) => ({
       id: item._id,
       title: item.name,
@@ -112,6 +115,5 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.products$?.unsubscribe();
   }
 }
