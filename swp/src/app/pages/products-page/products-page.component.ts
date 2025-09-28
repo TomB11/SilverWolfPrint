@@ -22,21 +22,38 @@ export class ProductsPageComponent implements OnInit {
   productsTitle = signal('Products');
 
   ngOnInit(): void {
-    this.productsTitle.set(this.orlRoute.snapshot.params['id'] || 'Products');
+    this.productsTitle.set(this.orlRoute.snapshot.params['id'] || 'all');
     this.state.select('appState').subscribe((state: AppState) => {
       const foundCollection = state.collections.find((collection: Collection) => {
         return collection.title.toLowerCase() === this.productsTitle();
       });
-      const collectionCode = foundCollection ? foundCollection.code : '';
-      const filteredProducts = state.products
-        .filter((product: PrintItem) => product.category === collectionCode)
-        .map((product: PrintItem) => ({
+      const collectionCode = foundCollection ? foundCollection.code : 'all';
+      const filteredProducts = this.filteryByCategory(collectionCode)
+      this.productsCard.set(filteredProducts);
+    });
+  }
+
+  filteryByCategory(categoryCode: string): Card[] {
+    let result: Card[] = [];
+    this.state.select('appState').subscribe((state: AppState) => {
+      if (categoryCode === 'all') {
+        result = state.products.map((product: PrintItem) => ({
           id: product._id,
           title: product.name,
           description: product.description,
           imageUrl: product.image
         } as Card));
-      this.productsCard.set(filteredProducts);
-    });
+      } else {
+        result = state.products
+          .filter((product: PrintItem) => product.category === categoryCode)
+          .map((product: PrintItem) => ({
+            id: product._id,
+            title: product.name,
+            description: product.description,
+            imageUrl: product.image
+          } as Card));
+      }
+    }).unsubscribe();
+    return result;
   }
 }
