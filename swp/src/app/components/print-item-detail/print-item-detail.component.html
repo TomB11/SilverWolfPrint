@@ -4,8 +4,8 @@
     </div>
     <div class="info-container">
         <h1 class="title">{{ itemData().name }}</h1>
-        <p class="category"><b>{{'Kategoria:' | uppercase}}</b> {{ itemData().category }}</p>
-        <p class="description">{{ itemData().description }}</p>
+        <p class="category"><b>{{'Kategoria:' | uppercase}}</b> {{ stateService.getCorectCollection(itemData().category)?.title }}</p>
+        <p class="description"><b>{{'Popis:' | uppercase}}</b> {{ itemData().description }}</p>
         <p class="price">Cena: {{ itemData().price | currency }}</p>
         <br>
         <div class="action-buttons">

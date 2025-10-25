@@ -42,6 +42,15 @@ export class StateDataService {
     return null;
   }
 
+  getCorectCollection(collectionId: string) {
+    const savedState = localStorage.getItem('appState');
+    if (savedState) {
+      let currentState: AppState = JSON.parse(savedState);
+      return currentState.collections.find(col => String(col.code) === collectionId);
+    }
+    return null;
+  }
+
   addToCart(selectedProduct: CartItem): void {
     const savedState = localStorage.getItem('appState');
     let currentState: AppState = savedState ? JSON.parse(savedState) : {

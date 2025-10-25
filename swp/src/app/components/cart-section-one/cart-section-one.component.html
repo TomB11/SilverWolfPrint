@@ -1,0 +1,32 @@
+<div class="personal-information-section-container">
+    <h3 class="personal-information-title">Osobne udaje</h3>
+    <form class="personal-information-form control" [formGroup]="cartForm" novalidate>
+        <div class="form-group control-row">
+            <label for="name">Meno a priezvisko</label>
+            <input formControlName="name" type="text" id="name" class="form-control"
+                placeholder="Zadaj svoje meno a priezvisko" />
+        </div>
+        <div class="form-group control-row">
+            <label for="email">Emailova adresa</label>
+            <input formControlName="email" type="email" id="email" class="form-control"
+                placeholder="Zadaj svoju emailovu adresu" />
+            @if (invalidEmail) {
+            <span class="control-error">Zadajte platnu emailovu adresu.</span>
+            }
+        </div>
+        <div class="form-group control-row">
+            <label for="address">Dodacia adresa</label>
+            <input formControlName="address" type="text" id="address" class="form-control"
+                placeholder="Zadaj svoju dodaciu adresu" />
+        </div>
+        <div class="form-group control-row">
+            <label for="city">Mesto</label>
+            <input formControlName="city" type="text" id="city" class="form-control" placeholder="Zadaj svoje mesto" />
+        </div>
+        <div class="form-group control-row">
+            <label for="postalCode">PSC</label>
+            <input formControlName="postalCode" type="text" id="postalCode" class="form-control"
+                placeholder="Zadaj svoje PSC" />
+        </div>
+    </form>
+</div>

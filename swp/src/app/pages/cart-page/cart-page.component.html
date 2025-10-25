@@ -1,10 +1,10 @@
 <main class="container">
   <div class="cart-page">
     <div class="title-status">
-      <h3 class="title">Tvoj kosik</h3>
-      <h4 class="status">Krok 1/3</h4>
+      <h3 class="title">Nákupný košík</h3>
     </div>
-    @if (cartItems().length > 0) {
+    <div class="cart-items-section-container">
+      @if (cartItems().length > 0) {
       <div class="cart-table">
         <div class=" cart-items">
           @for (item of cartItems(); track $index) {
@@ -19,12 +19,45 @@
           }
         </div>
         <div class="cart-total">
-          <span class="total-label">Celkova suma:</span>
-          <p class="total-price">{{ cartTotal | currency }}</p>
+          <div class="row-value">
+            <span class="total-label">Suma:</span>
+            <p class="total-price">{{ currancyNumber | currency }}</p>
+          </div>
+          <div class="row-value">
+            <span class="total-label">Zlava:</span>
+            <p class="total-price">{{ "0" | currency }}</p>
+          </div>
+          <div class="row-value">
+            <span class="total-label">Doprava:</span>
+            <p class="total-price">{{ "0" | currency }}</p>
+          </div>
+          <hr>
+          <div class="row-value">
+            <span class="total-label">Celkova suma:</span>
+            <p class="total-price">{{ currancyNumber | currency }}</p>
+          </div>
         </div>
       </div>
-    } @else {
+      } @else {
       <p class="empty-cart-message">Tvoj kosik je prazdny.</p>
+      }
+    </div>
+
+    @defer (on interaction(toNextBtn)) {
+      @if (activesection() >= 1) {
+        <hr>
+        <app-cart-section-one #sectionOne (formSubmit)="setPersonalInfo($event)"></app-cart-section-one>
+      }
+      @if (activesection() >= 2) {
+        <hr>
+        <app-cart-section-two></app-cart-section-two>
+      }
+      @if (activesection() >= 3) {
+        <hr>
+        <app-cart-section-three></app-cart-section-three>
+      }
     }
+    <button class="button" (click)="toNextSection()" #toNextBtn>{{btnTitle}}</button>
+
   </div>
 </main>

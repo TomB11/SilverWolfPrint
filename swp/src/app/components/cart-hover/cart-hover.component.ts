@@ -20,7 +20,6 @@ export class CartHoverComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cartSubs = this.cartDataInStore.select('appState').subscribe((state) => {
-      console.log('Cart state updated:', state);
       this.isCartVisible.set(state.isCartVisible);
       this.cartCounterValue.set(
         state.cart.reduce((total: any, item: { quantity: any }) => total + item.quantity, 0)

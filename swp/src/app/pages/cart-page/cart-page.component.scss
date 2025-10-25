@@ -1,4 +1,5 @@
 @use '../../../styles.scss' as *;
+
 .cart-page {
   padding: 20px;
   background-color: $highlight-color;
@@ -59,6 +60,7 @@
     .cart-total {
       flex: 1;
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
       background-color: $secondary-color;
       color: white;
@@ -66,11 +68,84 @@
       padding: 20px;
       border-top: 5px solid $border-color ;
       border-radius: 20px;
+
+      .row-value {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
     }
   }
 
   .empty-cart-message {
     font-size: 18px;
     color: #888;
+  }
+
+  .coupons-section-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .coupon-input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .apply-coupon-button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .delivery-section-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .delivery-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      input[type="radio"] {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 16px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .cart-table {
+      flex-direction: column;
+
+      .cart-items, .cart-total {
+        flex: none;
+        width: 100%;
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 10px;
+
+    .title-status {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 }
