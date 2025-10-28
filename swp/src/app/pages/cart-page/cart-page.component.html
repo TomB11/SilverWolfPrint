@@ -13,7 +13,7 @@
             <div class="item-details">
               <h2 class="item-name">{{ item.name }}</h2>
               <p class="item-price">{{ item.price | currency }}</p>
-              <button class="remove-button button">Zrusit</button>
+              <button class="remove-button button" (click)="removeItem(item)">Zrusit</button>
             </div>
           </div>
           }

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { CartItem } from '../../interfaces/cart';
 import { CartSectionOneComponent } from '../../components/cart-section-one/cart-section-one.component';
 import { CartSectionTwoComponent } from '../../components/cart-section-two/cart-section-two.component';
 import { CartSectionThreeComponent } from '../../components/cart-section-three/cart-section-three.component';
 import { PersonalInformation } from '../../interfaces/perosnalInfromation';
 import { FormsModule } from '@angular/forms';
+import { StateDataService } from '../../services/state-data.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class CartPageComponent implements OnInit, OnDestroy {
   @ViewChild('sectionOne') sectionOne!: CartSectionOneComponent;
+  stateService = inject(StateDataService);
   cartItems = signal<CartItem[]>([
     { productId: '1', name: 'Product 1', price: 100, image: null, quantity: 2 },
     { productId: '2', name: 'Product 2', price: 200, image: null, quantity: 1 },
@@ -33,8 +35,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Fetch cart items from a service or state management
-    // this.cartItems = this.cartService.getCartItems();
-    // this.updateCartTotal();
+    this.cartItems.set(this.stateService.getCartItems())
   }
 
   get btnTitle(): string {
@@ -64,6 +65,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
         totalAmount: this.cartTotal()
       });
     }
+  }
+
+  removeItem(item: CartItem) {
+    // const updatedCart = this.cartItems().filter(cartItem => cartItem.productId !== item.productId);
+    // this.cartItems.set(updatedCart);
+    this.stateService.removeFromCart(item.productId);
+    this.cartItems.set(this.stateService.getCartItems());
   }
 
   ngOnDestroy(): void {

@@ -51,6 +51,15 @@ export class StateDataService {
     return null;
   }
 
+  getCartItems(): CartItem[] {
+    const savedState = localStorage.getItem('appState');
+    if (savedState) {
+      let currentState: AppState = JSON.parse(savedState);
+      return currentState.cart;
+    }
+    return [];
+  }
+
   addToCart(selectedProduct: CartItem): void {
     const savedState = localStorage.getItem('appState');
     let currentState: AppState = savedState ? JSON.parse(savedState) : {
